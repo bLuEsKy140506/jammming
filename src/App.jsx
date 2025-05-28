@@ -5,11 +5,11 @@ import Spotify from "./Spotify"; // adjust the path if needed
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
-
+   console.log(results);
   const handleSearch = async () => {
     const tracks = await Spotify.search(searchTerm);
     setResults(tracks);
-    console.log(results);
+   
   };
 
   return (

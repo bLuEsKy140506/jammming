@@ -34,8 +34,12 @@ const Spotify = {
   async getAccessToken() {
     if (accessToken) return accessToken;
 
-    const storedToken = localStorage.getItem('spotify_token');
-    if (storedToken) return storedToken;
+   const storedToken = localStorage.getItem('spotify_token');
+const expiration = localStorage.getItem('spotify_token_expiration');
+
+if (storedToken && expiration && new Date().getTime() < Number(expiration)) {
+  return storedToken;
+}
 
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
@@ -72,6 +76,12 @@ const Spotify = {
       const tokenData = await tokenResponse.json();
       accessToken = tokenData.access_token;
       localStorage.setItem('spotify_token', accessToken);
+
+      const expiresIn = tokenData.expires_in; // usually 3600 seconds
+const expirationTime = new Date().getTime() + expiresIn * 1000;
+
+localStorage.setItem('spotify_token_expiration', expirationTime);
+
       window.history.replaceState({}, document.title, '/'); // Clean up URL
 
       return accessToken;
