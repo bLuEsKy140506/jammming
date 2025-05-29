@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import "./App.css";
 import Spotify from "./Spotify"; // adjust the path if needed
+import SaveButton from "./Playlist";
 
 function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const [myPlaylist, setMyPlaylist] = useState([]);
+  const [myPlaylistName, setMyPlaylistName] = useState('My Cool Playlist');
 
   const handleSearch = async () => {
     const tracks = await Spotify.search(searchTerm);
@@ -54,7 +56,13 @@ function App() {
           ))}
         </ul>
         <ul className="results-list">
-          <h2>My Playlist</h2>
+           <input
+        type="text"
+        placeholder="name of your playlist"
+        value={myPlaylistName}
+        onChange={(e) => setMyPlaylistName(e.target.value)}
+        className="search-input"
+      />
           {myPlaylist.map((list) => (
             <li key={list.id} className="track-item">
               <div>
@@ -63,6 +71,14 @@ function App() {
               <button onClick={() => deleteItem(list)}>-</button>
             </li>
           ))}
+  <SaveButton
+  onClick={() => {
+    setMyPlaylist([])
+  setMyPlaylistName("")}} // Clear playlist after saving
+  playlistName={myPlaylistName}
+  trackUris={myPlaylist.map(track => track.uri)}
+/>
+
         </ul>
       </div>
     </>

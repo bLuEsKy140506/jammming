@@ -1,4 +1,5 @@
 #root {
+  width: 100vw;
   max-width: 1280px;
   margin: 0;
   padding: 0;
@@ -21,12 +22,12 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-.app-title {
+h1.app-title {
   font-size: 2.5em;
   color: #fff;
-  margin: 0.5em auto;
   background-color: blueviolet;
-  width: 90vw;
+  width: 100%;
+  margin: 0;
 }
 
 .trademark {

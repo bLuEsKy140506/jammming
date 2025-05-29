@@ -34,7 +34,7 @@ const Spotify = {
   async getAccessToken() {
     if (accessToken) return accessToken;
 
-   const storedToken = localStorage.getItem('spotify_token');
+const storedToken = localStorage.getItem('spotify_token');
 const expiration = localStorage.getItem('spotify_token_expiration');
 
 if (storedToken && expiration && new Date().getTime() < Number(expiration)) {
@@ -106,6 +106,71 @@ localStorage.setItem('spotify_token_expiration', expirationTime);
       uri: track.uri,
     }));
   },
+
+   async savePlaylist(name, trackUris) {
+  try {
+    if (!name || !trackUris.length) return;
+
+    const token = await Spotify.getAccessToken();
+    const headers = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+
+    // Get user ID
+    const response = await fetch('https://api.spotify.com/v1/me', { headers });
+    const jsonResponse = await response.json();
+    const userId = jsonResponse.id;
+
+    if (!userId) {
+      console.error('No user ID found', jsonResponse);
+      return;
+    }
+
+    // Create playlist
+    const createPlaylist = await fetch(
+      `https://api.spotify.com/v1/users/${userId}/playlists`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ name }),
+      }
+    );
+
+    if (!createPlaylist.ok) {
+      const error = await createPlaylist.text();
+      console.error('Failed to create playlist:', error);
+      return;
+    }
+
+    const playlistResponse = await createPlaylist.json();
+    const playlistId = playlistResponse.id;
+
+    if (!playlistId) {
+      console.error('No playlist ID returned:', playlistResponse);
+      return;
+    }
+
+    // Add tracks
+    const addTracks = await fetch(
+      `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+      {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ uris: trackUris }),
+      }
+    );
+
+    if (!addTracks.ok) {
+      const error = await addTracks.text();
+      console.error('Failed to add tracks:', error);
+    }
+
+  } catch (error) {
+    console.error('Error saving playlist:', error);
+  }
+}
+
+
+
+  
 };
 
 export default Spotify;
