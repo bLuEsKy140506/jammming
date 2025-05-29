@@ -27,7 +27,14 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: rgba(179, 1, 179, 0.452);
+  background-image: linear-gradient(
+      rgba(206, 9, 196, 0.575),
+      rgba(139, 2, 180, 0.5)
+    ),
+    url("./assets/background.jpg");
+  background-size: auto;
+  background-position: center;
+  background-attachment: fixed;
   justify-content: center;
 }
 

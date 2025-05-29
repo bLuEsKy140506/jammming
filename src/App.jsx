@@ -7,7 +7,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const [myPlaylist, setMyPlaylist] = useState([]);
-  const [myPlaylistName, setMyPlaylistName] = useState('My Cool Playlist');
+  const [myPlaylistName, setMyPlaylistName] = useState("");
 
   const handleSearch = async () => {
     const tracks = await Spotify.search(searchTerm);
@@ -56,13 +56,14 @@ function App() {
           ))}
         </ul>
         <ul className="results-list">
-           <input
-        type="text"
-        placeholder="name of your playlist"
-        value={myPlaylistName}
-        onChange={(e) => setMyPlaylistName(e.target.value)}
-        className="search-input"
-      />
+          <h2>My Playlist</h2>
+          <input
+            type="text"
+            placeholder="name your playlist"
+            value={myPlaylistName}
+            onChange={(e) => setMyPlaylistName(e.target.value)}
+            className="search-input"
+          />
           {myPlaylist.map((list) => (
             <li key={list.id} className="track-item">
               <div>
@@ -71,14 +72,14 @@ function App() {
               <button onClick={() => deleteItem(list)}>-</button>
             </li>
           ))}
-  <SaveButton
-  onClick={() => {
-    setMyPlaylist([])
-  setMyPlaylistName("")}} // Clear playlist after saving
-  playlistName={myPlaylistName}
-  trackUris={myPlaylist.map(track => track.uri)}
-/>
-
+          <SaveButton
+            onClick={() => {
+              setMyPlaylist([]);
+              setMyPlaylistName("");
+            }} // Clear playlist after saving
+            playlistName={myPlaylistName}
+            trackUris={myPlaylist.map((track) => track.uri)}
+          />
         </ul>
       </div>
     </>
