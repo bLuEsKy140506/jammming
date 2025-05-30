@@ -1,5 +1,7 @@
 const clientId = 'd37481774e744789a6c92db53dc9d4b8';
-const redirectUri = 'http://127.0.0.1:5173/callback'; // Your app’s redirect URI
+// const redirectUri = 'http://127.0.0.1:5173/callback'; // Your app’s redirect URI
+const redirectUri = 'https://jammming-ruby.vercel.app/callback'; // NEW
+
 
 const scopes = [
   'user-read-private',
